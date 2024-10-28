@@ -32,8 +32,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 turn+= 1;
             }
         }
+
     }))
     
+    boxes.forEach(box => box.addEventListener("mouseover", function(){
+        box.classList.add("hover");
+    }))
+
+    boxes.forEach(box => box.addEventListener("mouseout", function(){
+        box.classList.remove("hover");
+    }))
 });
-
-
