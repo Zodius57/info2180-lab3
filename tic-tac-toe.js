@@ -7,6 +7,17 @@ document.addEventListener("DOMContentLoaded", function() {
     const setO = "O";
     let currentShape = setX;
 
+    const winner = [
+        [0,1,2],
+        [3,4,5],
+        [6,7,8],
+        [0,3,6],
+        [1,4,7],
+        [2,5,8],
+        [0,4,8],
+        [2,4,6]
+    ]
+
     let board = document.getElementById("board");
     for (const child of board.children) {
         child.setAttribute("class", "square");
@@ -18,9 +29,21 @@ document.addEventListener("DOMContentLoaded", function() {
 
     boxes.forEach(box => box.addEventListener("click", function(){
         let position = box.id;
+        let check = winningPlay();
         if(!boMem[position]){
-            boMem[position] = currentShape;
-            box.innerText = currentShape;
+            if(check == false){
+                boMem[position] = currentShape;
+                box.innerText = currentShape;
+            }
+            if(check !== false){
+                statScreen = document.getElementById("status");
+                statScreen.classList.add("you-won");
+                if(check == "X"){
+                    statScreen.innerText = "Congratulations! X is the Winner!";
+                }else{
+                    statScreen.innerText = "Congratulations! O is the Winner!";
+                }       
+            }
 
             if(currentShape == setX){
                 box.setAttribute("class", "square X");
@@ -34,6 +57,18 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
     }))
+
+    function winningPlay(){
+        for(win of winner){
+            let [a, b, c] = win;
+            check = boMem[a] 
+
+            if(check && boMem[b] == check && check == boMem[c]){
+                return check;
+            }
+        }
+        return false;
+    }
     
     boxes.forEach(box => box.addEventListener("mouseover", function(){
         box.classList.add("hover");
