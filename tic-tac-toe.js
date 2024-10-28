@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const setO = "O";
     let currentShape = setX;
 
+    let statScreen = document.getElementById("status");
+
     const winner = [
         [0,1,2],
         [3,4,5],
@@ -32,24 +34,30 @@ document.addEventListener("DOMContentLoaded", function() {
         let check = winningPlay();
         if(!boMem[position]){
             if(check == false){
+                console.log(boMem);
                 boMem[position] = currentShape;
                 box.innerText = currentShape;
+                console.log("memory filled");
             }
+            check = winningPlay();
+
             if(check !== false){
-                statScreen = document.getElementById("status");
+                console.log("a player won");
                 statScreen.classList.add("you-won");
                 if(check == "X"){
                     statScreen.innerText = "Congratulations! X is the Winner!";
                 }else{
                     statScreen.innerText = "Congratulations! O is the Winner!";
-                }       
+                }
+                console.log("Status Updated");       
             }
-
             if(currentShape == setX){
+                console.log("X shown");
                 box.setAttribute("class", "square X");
                 currentShape = setO;
                 turn+= 1;
             }else{
+                console.log("Y shown");
                 box.setAttribute("class", "square O");
                 currentShape = setX;
                 turn+= 1;
@@ -57,6 +65,18 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
     }))
+
+    let restart = document.getElementsByClassName("btn")[0];
+    restart.addEventListener("click", restartFunc);
+
+    function restartFunc(){
+        boMem.fill(null);
+        boxes.forEach(box => {
+            box.innerText = '';
+        })
+        statScreen.innerText = "Move your mouse over a square and click to play an X or an O.";
+        statScreen.classList.remove("you-won");
+    }
 
     function winningPlay(){
         for(win of winner){
